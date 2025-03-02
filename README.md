@@ -19,5 +19,5 @@ Download Here
 - Trashy
 
 ## Distract - Your annoyance is our joy.
-made at![Scrapyard Logo](https://scrapyard.hackclub.com/elements/wordmark.svg) by
+made at[![Scrapyard Logo](https://scrapyard.hackclub.com/elements/wordmark.svg)](https://scrapyard.hackclub.com) by
 [@N1k0s1](https://github.com/N1k0s1), [mattsoh](https://github.com/mattsoh) and [me:)](https://github.com/Cosmin-Mare)
