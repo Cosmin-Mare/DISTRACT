@@ -1,18 +1,10 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
-
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Modal } from 'react-native';
+import { Stack, useRouter } from 'expo-router';
 import HomeScreen from '.';
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+const Layout = () => {
+  return <HomeScreen/>
+};
 
-  return (
-    <HomeScreen/>
-  );
-}
+export default Layout;
