@@ -59,25 +59,28 @@ const RandomAlarmSetter = () => {
 
     await Calendar.createEventAsync(defaultCalendar.id, eventDetails);
 
-    Alert.alert('Success', `Alarm set for ${randomTime.toLocaleTimeString()}`);
+    Alert.alert('Success', `ICBM Inbound`);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Enter Start Time (HH:mm):</Text>
+      <Text style={[styles.label, { color: 'grey' }]}>input 2 different times, and a random alarm will sound sometime in the timeframe.</Text>
+      <Text style={styles.label}>enter start time (hh:mm)</Text>
       <TextInput
         style={styles.input}
         placeholder="18:00"
         value={startTime}
         onChangeText={setStartTime}
+        placeholderTextColor="grey"
       />
 
-      <Text style={styles.label}>Enter End Time (HH:mm):</Text>
+      <Text style={styles.label}>enter end time (hh:mm)</Text>
       <TextInput
         style={styles.input}
         placeholder="20:00"
         value={endTime}
         onChangeText={setEndTime}
+        placeholderTextColor="grey"
       />
 
       <Button title="Set Random Alarm" onPress={setRandomAlarm} />

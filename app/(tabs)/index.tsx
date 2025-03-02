@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Chatbot from './chatbot';
 import RandomAlarm from './randomalarm';
 import Entertainment from './entertainment';
+import Translate from './translate';
 import { Video } from 'react-native-video';
 
 export default function HomeScreen() {
@@ -16,7 +17,8 @@ export default function HomeScreen() {
   const [username, setUsername] = useState<string>('');
   const [showChatbot, setShowChatbot] = useState<boolean>(true);
   const [showRandomAlarm, setShowRandomAlarm] = useState<boolean>(false);
-  const [showentertainment, setShowentertainment] = useState<boolean>(false);
+  const [showEntertainment, setShowEntertainment] = useState<boolean>(false);
+  const [showTranslate, setShowTranslate] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
@@ -60,21 +62,25 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Button
-        title={`Switch to Chatbot`}
-        onPress={() => {setShowChatbot(true)}}
+        title={`Chatbot`}
+        onPress={() => {setShowChatbot(true), setShowRandomAlarm(false), setShowEntertainment(false)}}
       />
       <Button
-        title={`Toggle Random Alarm`}
-        onPress={() => {setShowRandomAlarm(true); setShowChatbot(false)}}
+        title={`Random Alarm`}
+        onPress={() => {setShowRandomAlarm(true); setShowChatbot(false), setShowEntertainment(false), setShowTranslate(false)}}
       />
       <Button
-        title={`Toggle Enterntainment`}
-        onPress={() => {setShowentertainment(true); setShowChatbot(false); setShowRandomAlarm(false)}}
+        title={`Enterntainment`}
+        onPress={() => {setShowEntertainment(true); setShowChatbot(false); setShowRandomAlarm(false), setShowTranslate(false)}}
+      />
+      <Button
+        title={`Translate`}
+        onPress={() => {setShowEntertainment(false); setShowChatbot(false); setShowRandomAlarm(false), setShowTranslate(true)}}
       />
       {showChatbot ? (
         <Chatbot />
       ) : showRandomAlarm ? <RandomAlarm/> : 
-      showentertainment ? <Entertainment /> :
+      showEntertainment ? <Entertainment /> : showTranslate ? <Translate /> : 
       ( 
         <ThemedView>
           <View>
@@ -85,7 +91,6 @@ export default function HomeScreen() {
               onChangeText={setUsername}
             />
             <Button title="Save Username" onPress={saveUsername} />
-            <Text style={{ color: "white" }}>{notificationToken}</Text>
           </View>
         </ThemedView>
       )}
