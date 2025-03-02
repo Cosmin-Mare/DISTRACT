@@ -1,4 +1,5 @@
 import { Image, StyleSheet, Platform, View, Text, TextInput, Button } from 'react-native';
+import * as Notifications from 'expo-notifications';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useState } from 'react';
 import { registerForPushNotificationsAsync } from '@/utils/registerForPushNotificationsAsync';
@@ -6,7 +7,7 @@ import React from 'react';
 import { ThemedView } from '@/components/ThemedView';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Chatbot from './chatbot';
-import RandomAlarmSetter from './randomalarm';
+import RandomAlarm from './randomalarm';
 import Entertainment from './entertainment';
 import { Video } from 'react-native-video';
 
@@ -20,6 +21,11 @@ export default function HomeScreen() {
   useEffect(() => {
     (async () => {
       setNotificationToken(await registerForPushNotificationsAsync())
+      await Notifications.setNotificationChannelAsync('alarm', {
+        name: 'Alarms',
+        importance: Notifications.AndroidImportance.HIGH,
+        sound: 'alarm.wav', // Provide ONLY the base filename
+      });
     })()
   }, []);
 
@@ -67,7 +73,7 @@ export default function HomeScreen() {
       />
       {showChatbot ? (
         <Chatbot />
-      ) : showRandomAlarm ? <RandomAlarmSetter /> : 
+      ) : showRandomAlarm ? <RandomAlarm/> : 
       showentertainment ? <Entertainment /> :
       ( 
         <ThemedView>

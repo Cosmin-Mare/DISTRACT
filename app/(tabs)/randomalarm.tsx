@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, Button, TextInput, StyleSheet, Alert } from 'react-native';
 import * as Calendar from 'expo-calendar';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
 
 const RandomAlarmSetter = () => {
   const [startTime, setStartTime] = useState('');
@@ -31,33 +33,38 @@ const RandomAlarmSetter = () => {
       return;
     }
 
+
     const randomTime = getRandomTime(startDate, endDate);
     setAlarmTime(randomTime);
 
-    const { status } = await Calendar.requestCalendarPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert('Error', 'Calendar permissions not granted.');
+    // const { status: calendarStatus } = await Calendar.requestCalendarPermissionsAsync();
+    // if (calendarStatus !== 'granted') {
+    //   Alert.alert('Error', 'Calendar permissions not granted.');
+    //   return;
+    // }
+
+    const { status: notificationStatus } = await Notifications.requestPermissionsAsync();
+    if (notificationStatus !== 'granted') {
+      Alert.alert('Error', 'Notification permissions not granted.');
       return;
     }
 
-    const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
-    const defaultCalendar = calendars.find(calendar => calendar.isPrimary) || calendars[0];
-
-    const eventDetails = {
-      title: 'Random Alarm',
-      startDate: randomTime,
-      endDate: new Date(randomTime.getTime() + 5 * 60 * 1000), // 5 minutes duration
-      timeZone: 'GMT',
-      location: 'Random Location',
-      alarms: [
-        {
-          method: Calendar.AlarmMethod.ALERT,
-          relativeOffset: 0, // Alarm at the exact event start time
-        },
-      ],
-    };
-
-    await Calendar.createEventAsync(defaultCalendar.id, eventDetails);
+    // Create notification channel
+    await Notifications.setNotificationChannelAsync('alarm', {
+      name: 'Alarm',
+      importance: Notifications.AndroidImportance.HIGH,
+      sound: 'alarm.wav',
+    });
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Alarm",
+        body: "test"
+      },
+      trigger: {
+        seconds: 2,
+        channelId: 'alarm',
+      },
+    });
 
     Alert.alert('Success', `Alarm set for ${randomTime.toLocaleTimeString()}`);
   };
@@ -82,11 +89,11 @@ const RandomAlarmSetter = () => {
 
       <Button title="Set Random Alarm" onPress={setRandomAlarm} />
 
-      {alarmTime && (
+      {/* {alarmTime && (
         <Text style={styles.alarmText}>
           Alarm set for {alarmTime.toLocaleTimeString()}.
         </Text>
-      )}
+      )} */}
     </View>
   );
 };
